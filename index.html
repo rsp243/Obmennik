@@ -22,15 +22,15 @@
         <form action="">
             <div class="row">
               <div class="col">
-                <select class="form-select">
+                <select class="form-select" id="take">
                     <option value="" disabled selected hidden>Отдаешь</option>
-                    <option class="menu" value="1">Сбербанк (RUB)</option>
+                    <option class="menu" value="(RUB)">Сбербанк (RUB)</option>
                 </select>
               </div>
               <div class="col">
-                <select class="form-select">
+                <select class="form-select" id="give">
                     <option value="" disabled selected hidden>Получаешь</option>
-                    <option class="menu" value="1">Ethereum (ETH)</option>
+                    <option class="menu" value="(ETH)">Ethereum (ETH)</option>
                 </select>
               </div>
             </div>
@@ -42,13 +42,14 @@
                 <input type="text" class="form-control" id="validationServer01" value="" required>
               </div>
               <div class="col">
-                <input type="text" class="form-control" id="validationServer01" value="" disabled>
+                <input type="text" class="form-control" id="validationServer02" value="" disabled>
               </div>
             </div>
         </form>
         <div>
             <p style="margin-top: 5px;">Минимум:</p>
             <p style="margin-top: -0.8em;">Курс:</p>
+            <p style="margin-top: -0.8em;">Выплата рассчитывается с учетом комиссии обменника</p>
         </div>
         <form action="">
             <div style="height: 100px;"></div>
@@ -68,7 +69,8 @@
             <button class="btn btn-success btn-lg">Обменять</button>
             <strong><p style="color: red">Проверьте правильность введенных данных, при неправильно указанных данных сделка совершена не будет!</p></strong>        </div>
         </div>
-    
-    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="src/index.js"></script>
 </body>
 </html>
