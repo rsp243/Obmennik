@@ -3,7 +3,7 @@ let listOfCoins = {
 }
 
 for (let i = 0; i < listOfCoins['exchangeDirections'].length; i++){
-    let value = listOfCoins['exchangeDirections'][i].slice(listOfCoins['exchangeDirections'][i].indexOf('('))
+    let value = listOfCoins['exchangeDirections'][i].slice(listOfCoins['exchangeDirections'][i].indexOf('(') + 1, listOfCoins['exchangeDirections'][i].length - 1)
     $('.menuTake').clone().appendTo($('#take')).attr("class", 'menuTake' + i).text(listOfCoins['exchangeDirections'][i]).attr('value', value).css('display', '')
     $('.menuGive').clone().appendTo($('#give')).attr("class", 'menuGive' + i).text(listOfCoins['exchangeDirections'][i]).attr('value', value).css('display', '')
 }
