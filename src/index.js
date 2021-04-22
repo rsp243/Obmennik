@@ -1,3 +1,13 @@
+let listOfCoins = { 
+    "exchangeDirections": ["Ravencoin (RVN)", "Ergo (ERG)", "Monero (XMR)", "ZCash (ZEC)", "Tether TRC20 (USDT TRC20)", "Sber (RUB)"]
+}
+
+for (let i = 0; i < listOfCoins['exchangeDirections'].length; i++){
+    let value = listOfCoins['exchangeDirections'][i].slice(listOfCoins['exchangeDirections'][i].indexOf('('))
+    $('.menuTake').clone().appendTo($('#take')).attr("class", 'menuTake' + i).text(listOfCoins['exchangeDirections'][i]).attr('value', value).css('display', '')
+    $('.menuGive').clone().appendTo($('#give')).attr("class", 'menuGive' + i).text(listOfCoins['exchangeDirections'][i]).attr('value', value).css('display', '')
+}
+
 $('#take').on('blur', function() {
     let takeCoin = document.getElementById('take').value;
     let giveCoin = document.getElementById('give').value;
