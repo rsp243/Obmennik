@@ -48,22 +48,26 @@
         </form>
         <div>
             <p id="error" style="color: red"></p>
-            <p style="margin-top: 5px;">Минимум:</p>
-            <p style="margin-top: -0.8em;">Курс:</p>
+            <p style="margin-top: 5px;" id='min'>Минимум:</p>
+            <p style="margin-top: -0.8em;" id="rate">Курс:</p>
             <p style="margin-top: -0.8em;">Выплата рассчитывается с учетом комиссии обменника</p>
         </div>
         <form action="">
             <div style="height: 100px;"></div>
             <div class="form-group" style="width: 40%;">
                 <label>Почта</label>
-                <input type="email" class="form-control" aria-describedby="emailHelp">
-                <small id="emailHelp" class="form-text text-muted">Мы никому не передадим ваш email</small>
+                <input type="email" class="form-control" aria-describedby="emailHelp" id="email" placeholder="example@gmail.com">
+                <p id="emailError" style="color: red"></p>
+                <small id="emailHelp" class="form-text text-muted" style="margin-top: -0.7em;">Мы никому не передадим ваш email</small>
             </div>
             <div style="height: 10px;"></div>
             <div class="form-group" style="width: 40%;">
                 <label>Номер карты</label>
-                <input type="numberCard" class="form-control" aria-describedby="numberCard">
-                <small id="numberCard" class="form-text text-muted">Мы никому не передадим ваш номер карты</small>
+                <form name="myform">
+                    <input type="numberCard" class="form-control" aria-describedby="numberCard" name="cardcode" placeholder="××××××××××××××××" required>
+                </form>
+                <p id="cardError" style="color: red"></p>
+                <small id="numberCard" class="form-text text-muted" style="margin-top: -0.7em;">Мы никому не передадим ваш номер карты</small>
             </div>
         </form>
         <div align='center' style="padding:30px">
