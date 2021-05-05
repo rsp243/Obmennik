@@ -1,19 +1,27 @@
-let listOfCoins = { 
-    "exchangeDirections": ["Ravencoin (RVN)", "Ergo (ERG)", "Monero (XMR)", "ZCash (ZEC)", "Tether TRC20 (USDT TRC20)", "Sber (RUB)"]
-}
+let firstReq = {"request": "exchange"}
+
+$.ajax({
+    type: "POST",
+    url: 'http://127.0.0.1:80',
+    data: firstReq,
+    success: function(response){
+        let listOfCoins = response
+        for (let i = 0; i < listOfCoins.split(', ').length; i++){
+            let value = listOfCoins.split(', ')[i].slice(listOfCoins.split(', ')[i].indexOf('(') + 1, listOfCoins.split(', ')[i].length - 1)
+            $('.menuTake').clone().appendTo($('#take')).attr("class", 'menuTake' + i).text(listOfCoins.split(', ')[i]).attr('value', value).css('display', '')
+            $('.menuGive').clone().appendTo($('#give')).attr("class", 'menuGive' + i).text(listOfCoins.split(', ')[i]).attr('value', value).css('display', '')
+        }
+    },
+});
 
 let picked = {
     "coinName": "RVN",
     "receiveName": "RUB",
     "minAmount": 60.57142857142858,
     "price": 12.590899999999998,
-  }
-
-for (let i = 0; i < listOfCoins['exchangeDirections'].length; i++){
-    let value = listOfCoins['exchangeDirections'][i].slice(listOfCoins['exchangeDirections'][i].indexOf('(') + 1, listOfCoins['exchangeDirections'][i].length - 1)
-    $('.menuTake').clone().appendTo($('#take')).attr("class", 'menuTake' + i).text(listOfCoins['exchangeDirections'][i]).attr('value', value).css('display', '')
-    $('.menuGive').clone().appendTo($('#give')).attr("class", 'menuGive' + i).text(listOfCoins['exchangeDirections'][i]).attr('value', value).css('display', '')
 }
+
+
 
 $('#take').on('blur', function() {
     let takeCoin = document.getElementById('take').value;
@@ -22,13 +30,40 @@ $('#take').on('blur', function() {
         sl1 = JSON.stringify({"coinName": takeCoin, "receiveName": giveCoin})
         $.ajax({
             type: "POST",
-            url: '127.0.0.1:80',
+            url: 'http://127.0.0.1:80',
             data: sl1,
-            success: function(){
-                alert('Произошла выгрузка данных')
+            success: function(response){
+                console.log(response)
+                let price = response.split(', ')[1]
+                let minAmount = response.split(', ')[0]
+                let coinName = document.getElementById('take').value;
+                $('#min').text(String(minAmount) + ' ' + coinName)
+                if (takeCoin === "USD" || takeCoin === "USDT TRC20" || takeCoin === "RUB") {
+                    $('#rate').text(' 1 ' + giveCoin + ' = ' + String(price) + ' ' + coinName)
+                } else {
+                    $('#rate').text(' 1 ' + coinName + ' = ' + String(price) + ' ' + giveCoin)
+                }
             },
         });
-        console.log(sl1)
+        let count = document.getElementById('validationServer01').value;
+        if (count != '') {
+            count = Number(count)
+            if (isNaN(count) || count < Number($('#min').text().split(' ')[0])){
+                $('#error').text('Введите корректные данные!')
+            } else {
+                $('#error').text('')
+                sl2 = JSON.stringify({"amount": Number(count), "coinName": takeCoin, "receiveName": giveCoin})
+                $.ajax({
+                    type: "POST",
+                    url: 'http://127.0.0.1:80',
+                    data: sl2,
+                    success: function(response){
+                        console.log(response)
+                        document.getElementById('validationServer02').value = response
+                    },
+                });
+            }
+        }
     }
 })
 
@@ -41,17 +76,39 @@ $('#give').on('blur', function() {
         sl1 = JSON.stringify({"coinName": takeCoin, "receiveName": giveCoin})
         $.ajax({
             type: "POST",
-            url: '127.0.0.1:80',
+            url: 'http://127.0.0.1:80',
             data: sl1,
-            success: function(){
-                alert('Произошла выгрузка данных')
+            success: function(response){
+                console.log(response)
+                let price = response.split(', ')[1]
+                let minAmount = response.split(', ')[0]
+                let coinName = document.getElementById('take').value
+                $('#min').text(String(minAmount) + ' ' + coinName)
+                if (takeCoin === "USD" || takeCoin === "USDT TRC20" || takeCoin === "RUB") {
+                    $('#rate').text(' 1 ' + giveCoin + ' = ' + String(price) + ' ' + coinName)
+                } else {
+                    $('#rate').text(' 1 ' + coinName + ' = ' + String(price) + ' ' + giveCoin)
+                }
             },
         });
-        let coinName = document.getElementById('take').value;
-        let recieveName = document.getElementById('give').value;
-        if (coinName === picked['coinName'] && recieveName === picked['receiveName']){
-            $('#min').text($('#min').text() + ' ' + picked['minAmount'])
-            $('#rate').text($('#rate').text() + ' 1 ' + coinName + ' = ' + String(picked['price']))
+        let count = document.getElementById('validationServer01').value;
+        if (count != '') {
+            count = Number(count)
+            if (isNaN(count) || count < Number($('#min').text().split(' ')[0])){
+                $('#error').text('Введите корректные данные!')
+            } else {
+                $('#error').text('')
+                sl2 = JSON.stringify({"amount": Number(count), "coinName": takeCoin, "receiveName": giveCoin})
+                $.ajax({
+                    type: "POST",
+                    url: 'http://127.0.0.1:80',
+                    data: sl2,
+                    success: function(response){
+                        console.log(response)
+                        document.getElementById('validationServer02').value = response
+                    },
+                });
+            }
         }
     }
 })
@@ -73,25 +130,25 @@ $('#validationServer01').on('blur', function() {
     let count = document.getElementById('validationServer01').value;
     if (takeCoin != '' && giveCoin != '' && count != ''){  
         count = Number(count)
-        if (isNaN(count)){
+        if (isNaN(count) && count < Number($('#min').text())){
             $('#error').text('Введите корректные данные!')
         } else {
             $('#error').text('')
-            sl2 = JSON.stringify({"amount": Number(count)})
+            sl2 = JSON.stringify({"amount": Number(count), "coinName": takeCoin, "receiveName": giveCoin})
             $.ajax({
                 type: "POST",
-                url: '127.0.0.1:80',
+                url: 'http://127.0.0.1:80',
                 data: sl2,
-                success: function(){
-                    alert('Произошла выгрузка данных')
+                success: function(response){
+                    console.log(response)
+                    document.getElementById('validationServer02').value = response
                 },
             });
         }
-        
     }
 })
 
-
+/*  
 let cardInput = myform.cardcode;
 
 for (var i in ['input', 'change', 'blur', 'keyup']) {
@@ -103,3 +160,4 @@ function formatCardCode() {
     cardCode = cardCode != '' ? cardCode.match(/.{1,4}/g).join(' ') : '';
     this.value = cardCode;
 }
+*/

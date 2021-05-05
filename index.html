@@ -48,8 +48,8 @@
         </form>
         <div>
             <p id="error" style="color: red"></p>
-            <p style="margin-top: 5px;" id='min'>Минимум:</p>
-            <p style="margin-top: -0.8em;" id="rate">Курс:</p>
+            <p style="margin-top: 5px;">Минимум: <span id='min'></span></p>
+            <p style="margin-top: -0.8em;">Курс: <span id="rate"></span></p>
             <p style="margin-top: -0.8em;">Выплата рассчитывается с учетом комиссии обменника</p>
         </div>
         <form action="">
@@ -63,9 +63,7 @@
             <div style="height: 10px;"></div>
             <div class="form-group" style="width: 40%;">
                 <label>Номер карты</label>
-                <form name="myform">
-                    <input type="numberCard" class="form-control" aria-describedby="numberCard" name="cardcode" placeholder="××××××××××××××××" required>
-                </form>
+                <input type="numberCard" class="form-control" aria-describedby="numberCard" name="cardcode" placeholder="××××××××××××××××" required>
                 <p id="cardError" style="color: red"></p>
                 <small id="numberCard" class="form-text text-muted" style="margin-top: -0.7em;">Мы никому не передадим ваш номер карты</small>
             </div>
